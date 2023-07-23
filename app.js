@@ -8,7 +8,7 @@ app.use(express.urlencoded({extended:true}))
 
 app.get('/api/products',async(req,res)=>{
     try{
-    const product = await productManager.getProducts()
+    const product = await productManager.getProduct()
     res.status(200).json({message:'products',product})
     }catch(error){
         res.status(500).json((error))

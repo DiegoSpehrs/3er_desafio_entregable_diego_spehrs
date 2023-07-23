@@ -1,1 +1,13 @@
-[]
+[
+    {
+        "title": {
+            "title": "Tablet",
+            "description": "esto es una prueba",
+            "price": 5000,
+            "thumbnail": "esto es una prubea",
+            "code": "abc123",
+            "stock": 25
+        },
+        "id": 1
+    }
+]
