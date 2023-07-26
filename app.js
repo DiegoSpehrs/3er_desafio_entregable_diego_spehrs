@@ -6,16 +6,23 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
-app.get('/api/products',async(req,res)=>{
+app.get('/products',async(req,res)=>{
+    const limit = req.query.limit
     try{
-    const product = await productManager.getProduct()
-    res.status(200).json({message:'products',product})
+        if(!limit){
+            const product = await productManager.getProduct()
+            res.status(200).json({message:'products',product})
+        }else{
+            const product = await productManager.getProduct()
+            const prodLimit = product.slice(0,limit)
+            res.status(200).json({message:'Los productos segun tu busqueda son', prodLimit})
+        }
     }catch(error){
         res.status(500).json((error))
     }
 })
 
-app.get('/api/products/:idproduct',async(req,res)=>{
+app.get('/products/:idproduct',async(req,res)=>{
     const {idProduct} = req.params
     try{
     const product = await productManager.getProductById(+idProduct)
@@ -24,37 +31,6 @@ app.get('/api/products/:idproduct',async(req,res)=>{
         res.status(500).json({error})
     }
 })
-
-app.post('/api/products',async(req,res)=>{
-    try{
-    const newProduct = await productManager.addProduct(req.body)
-    res.status(200).json({message:'Product created',product:newProduct})
-    }catch(error){
-        res.status(500).json({error})
-    }
-})
-
-app.delete('/api/product/:idProduct',async(req,res)=>{
-    const {idProduct} = req.params
-    try{
-        const response = await productManager.deletProduct(+idProduct)
-        res.status(200).json({message:'Product deleted'})
-    }catch(error){
-        res.status(500).json({erorr})
-    }
-})
-
-app.put('/api/products/idProduct',async(req,res)=>{
-    const {idProduct} = req.params
-    try{
-    const productUpdated = await productManager.updateProduct(+idProduct,req.body)
-    res.status(200).json({message:'Product updated'})
-    }catch(error){
-        res.status(500).json({error})
-    }
-})
-
-
 
 app.listen(8080, ()=>{
     console.log('escuchando al puerto 8080')
